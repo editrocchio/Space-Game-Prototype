@@ -59,9 +59,9 @@ public class DisplayShipController : MonoBehaviour
         ShipSelectionController shipSelectionController = GameObject.Find(shipName + "Container").GetComponent<ShipSelectionController>();
         shipSelectionController.SelectShip(selected);
         if (selected) {
-            shipSelectionController.AddChosenShip(gameObject.name);
+            ShipSelectionController.AddChosenShip(gameObject.name.Substring(0, gameObject.name.Length - 7));
         } else {
-            shipSelectionController.RemoveChosenShip(gameObject.name);
+            ShipSelectionController.RemoveChosenShip(gameObject.name.Substring(0, gameObject.name.Length - 7));
         }
         CloseShipStatsMenu();
     }

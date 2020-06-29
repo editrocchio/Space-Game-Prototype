@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class ShipSelectionController : MonoBehaviour 
@@ -29,7 +30,7 @@ public class ShipSelectionController : MonoBehaviour
 	private GameObject slotFilled;
 	private GameObject slotEmpty;
 
-	private ArrayList chosenShips;
+	private static ArrayList chosenShips;
 
 	void Start()
 	{
@@ -166,16 +167,18 @@ public class ShipSelectionController : MonoBehaviour
 	}
 
 	public void OnDoneBtnClick() {
-		foreach(string s in chosenShips) {
-			Debug.Log(s);
-		}
-    }
+		SceneManager.LoadScene("Battle", LoadSceneMode.Single);
+	}
 
-	public void AddChosenShip(string chosenShip) {
+	public static void AddChosenShip(string chosenShip) {
 		chosenShips.Add(chosenShip);
     }
 
-	public void RemoveChosenShip(string chosenShip) {
+	public static void RemoveChosenShip(string chosenShip) {
 		chosenShips.Remove(chosenShip);
+    }
+
+	public static ArrayList GetChosenShips() {
+		return chosenShips;
     }
 }
