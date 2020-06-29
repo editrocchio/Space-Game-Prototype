@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class ShipSelectionController : MonoBehaviour 
 {
@@ -28,6 +29,8 @@ public class ShipSelectionController : MonoBehaviour
 	private GameObject slotFilled;
 	private GameObject slotEmpty;
 
+	private ArrayList chosenShips;
+
 	void Start()
 	{
 		initPos = element.transform.localPosition;
@@ -36,6 +39,10 @@ public class ShipSelectionController : MonoBehaviour
 		slotFilled = GameObject.Find(gameObject.name + "/DangerIcon");
 		slotEmpty = GameObject.Find(gameObject.name + "/Hint_Ghost");
 		slotEmpty.SetActive(false);
+
+		GameObject.Find("DoneBtn").GetComponent<Button>().onClick.AddListener(OnDoneBtnClick);
+
+		chosenShips = new ArrayList();
 	}
 	void Update()
 	{
@@ -145,14 +152,30 @@ public class ShipSelectionController : MonoBehaviour
 			SetColors(lastClickedBox.transform.GetChild(0).gameObject, hoverOffColor);
 			SetColors(lastClickedBox.transform.GetChild(1).gameObject, hoverOffColor);
 			SetColors(lastClickedBox.transform.GetChild(3).gameObject, hoverColor);
+
 		} else {
 			ChangeBoxColor(lastClickedBox.transform.GetChild(0).gameObject,
 							lastClickedBox.transform.GetChild(1).gameObject,
 							lastClickedBox.transform.GetChild(2).gameObject,
 							null,
 							hoverOffColor);
+
 		}
 
 		lastClickedBox = null;
 	}
+
+	public void OnDoneBtnClick() {
+		foreach(string s in chosenShips) {
+			Debug.Log(s);
+		}
+    }
+
+	public void AddChosenShip(string chosenShip) {
+		chosenShips.Add(chosenShip);
+    }
+
+	public void RemoveChosenShip(string chosenShip) {
+		chosenShips.Remove(chosenShip);
+    }
 }
