@@ -15,13 +15,14 @@ public class DisplayShipController : MonoBehaviour
     void OnMouseOver() {
         if (gameObject.GetComponent<Light>() == null) {
             gameObject.AddComponent<Light>();
-            Light light = gameObject.GetComponent<Light>();
-
-            light.intensity = 5;
-            light.range = 100;
-            light.color = Color.red;
-            light.type = LightType.Directional;
         }
+
+        Light light = gameObject.GetComponent<Light>();
+
+        light.intensity = 5;
+        light.range = 100;
+        light.color = Color.red;
+        light.type = LightType.Directional;
     }
 
     void OnMouseExit() {

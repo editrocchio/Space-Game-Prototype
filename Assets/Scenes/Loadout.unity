@@ -879,7 +879,7 @@ PrefabInstance:
     - target: {fileID: 8831279226866225101, guid: 8e06f9d0e010da24f9b82355c2948293,
         type: 3}
       propertyPath: m_TagString
-      value: FrigateSelected
+      value: Untagged
       objectReference: {fileID: 0}
     - target: {fileID: 8831279226866225101, guid: 8e06f9d0e010da24f9b82355c2948293,
         type: 3}

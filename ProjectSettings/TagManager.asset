@@ -5,7 +5,15 @@ TagManager:
   serializedVersion: 2
   tags:
   - colored
-  - FrigateSelected
+  - Frigate
+  - Battleship
+  - Destroyer
+  - Hubship
+  - Corvette
+  - bship
+  - corvette
+  - destroyer
+  - spacebg
   layers:
   - Default
   - TransparentFX
