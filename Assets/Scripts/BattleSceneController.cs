@@ -1,5 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using UnityEngine;
 
 public class BattleSceneController : MonoBehaviour
@@ -12,6 +14,8 @@ public class BattleSceneController : MonoBehaviour
     private const int corvetteCount = 3;
     private const int destroyerCount = 2;
     public const int spacing = 10;
+
+    private static ObservableCollection<string> selectedShips;
     
     // Start is called before the first frame update
     void Start()
@@ -19,6 +23,8 @@ public class BattleSceneController : MonoBehaviour
         playerShips = ShipSelectionController.GetChosenShips();
         lastPosition = GameObject.Find("LeftBorder").transform.position.x + spacing;
         rightEdge = GameObject.Find("RightBorder").transform.position.x - spacing;
+        selectedShips = new ObservableCollection<string>();
+        selectedShips.CollectionChanged += HandleChange;
 
         foreach (string ship in playerShips) {
             if(ship.Equals("Frigate")) {
@@ -51,7 +57,6 @@ public class BattleSceneController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
     }
 
     public GameObject InstantiateShips(string name, Vector3 size, Vector3 position) {
@@ -79,4 +84,52 @@ public class BattleSceneController : MonoBehaviour
         GameObject.Find(parent + "(Clone)").name = "Parent" + parent;
     }
 
+    public static ObservableCollection<string> GetSelectedShips() {
+        return selectedShips;
+    }
+
+    public void HandleChange(object sender, NotifyCollectionChangedEventArgs e) {
+
+        if (e.Action == NotifyCollectionChangedAction.Add) {
+            foreach (GameObject ship in GetAllShipTypes((string)e.NewItems[0])) {
+                ToggleShipSelection(ship);
+            }
+        }
+
+        if (e.Action == NotifyCollectionChangedAction.Remove) {
+            foreach (GameObject ship in GetAllShipTypes((string)e.OldItems[0])) {
+                ToggleShipSelection(ship);
+            }
+        }
+        
+
+        if (e.Action == NotifyCollectionChangedAction.Reset) {
+            BackgroundScript bgScript = GameObject.FindGameObjectsWithTag("spacebg")[0].GetComponent<BackgroundScript>();
+            foreach (string ship in bgScript.GetOldShips()) {
+                foreach (GameObject shipObj in GetAllShipTypes(ship)) {
+                    ToggleShipSelection(shipObj);
+                }
+            }
+        }
+    }
+
+    private void ToggleShipSelection(GameObject ship) {
+        Behaviour shipHalo = (Behaviour)ship.GetComponent("Halo");
+        ShipController shipController = ship.GetComponent<ShipController>();
+        bool shipSelected = shipController.IsSelected();
+        shipHalo.enabled = !shipSelected;
+        shipController.Select(!shipSelected);
+    }
+
+    public static void AddToSelectedShips(string shipToAdd) {
+        selectedShips.Add(shipToAdd);
+    }
+
+    public static void RemoveFromSelectedShips(string shipToAdd) {
+        selectedShips.Remove(shipToAdd);
+    }
+
+    public static void RemoveAllSelectShips() {
+        selectedShips.Clear();
+    }
 }

@@ -73,13 +73,10 @@ public class ShipController : MonoBehaviour
     }
 
     void OnMouseDown() {
-
-        foreach(GameObject ship in GetAllShipsOfThisType()) {
-            Behaviour shipHalo = (Behaviour)ship.GetComponent("Halo");
-            ShipController shipController = ship.GetComponent<ShipController>();
-            bool shipSelected = shipController.IsSelected();
-            shipHalo.enabled = !shipSelected;
-            shipController.Select(!shipSelected);
+        if (!selected) {
+            BattleSceneController.AddToSelectedShips(shipName);
+        } else {
+            BattleSceneController.RemoveFromSelectedShips(shipName);
         }
     }
 
